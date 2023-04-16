@@ -23,11 +23,42 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
-}
-
+function minesweeper(matrix) {
+  let result = Array(matrix.length).fill(0);
+  for(let i =0;i<matrix.length;i++) result[i] = Array(matrix[i].length).fill(0);
+  
+  for (let i = 0; i< matrix.length; i++){ 
+    for(let j = 0; j< matrix[i].length; j++){ 
+      if(i == 0){
+        if(j == 0){
+          result[i][j] += [matrix[i+1][j],matrix[i][j+1],matrix[i+1][j+1]].filter((x)=>!!x).length;
+        } else if(j>0 && j < matrix.length- 1) {
+          result[i][j] += [matrix[i+1][j],matrix[i][j+1],matrix[i+1][j+1],matrix[i+1][j-1],matrix[i][j-1]].filter((x)=>!!x).length;
+        } else if(j == matrix.length - 1) {
+          result[i][j] += [matrix[i+1][j],matrix[i][j-1],matrix[i+1][j-1]].filter((x)=>!!x).length;
+        }
+      } else if(i>0 && i < matrix.length- 1) {
+        if(j == 0){ 
+          result[i][j] += [matrix[i+1][j],matrix[i][j+1],matrix[i+1][j+1],matrix[i-1][j+1],matrix[i-1][j]].filter((x)=>!!x).length;
+        } else if(j>0 && j < matrix.length- 1) { 
+          result[i][j] += [matrix[i+1][j],matrix[i][j+1],matrix[i+1][j+1],matrix[i+1][j-1],matrix[i][j-1],matrix[i-1][j],matrix[i-1][j-1],matrix[i-1][j+1]].filter((x)=>!!x).length;
+        } else if(j == matrix.length - 1) { 
+          result[i][j] += [matrix[i+1][j],matrix[i][j-1],matrix[i+1][j-1],matrix[i-1][j],matrix[i-1][j-1]].filter((x)=>!!x).length;
+        } 
+      } else if(i == matrix.length - 1) {
+        if(j == 0){
+          result[i][j] += [matrix[i][j+1],matrix[i-1][j+1],matrix[i-1][j]].filter((x)=>!!x).length;
+        } else if(j>0 && j < matrix.length- 1) {
+          result[i][j] += [matrix[i][j-1],matrix[i][j+1],matrix[i-1][j],matrix[i-1][j-1],matrix[i-1][j+1]].filter((x)=>!!x).length;
+        } else if(j == matrix.length - 1) {
+          result[i][j] += [matrix[i][j-1],matrix[i-1][j-1],matrix[i-1][j]].filter((x)=>!!x).length;
+        }
+      }
+      
+    }
+  }
+  return result;
+} 
 module.exports = {
   minesweeper
 };
